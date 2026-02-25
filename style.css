@@ -1,0 +1,340 @@
+:root {
+    --primary: #2563EB;
+    --background: #F8FAFC;
+    --text: #1E293B;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    background-color: #ffffff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Шапка сайта */
+header {
+    background: linear-gradient(135deg, var(--primary), #1d4ed8);
+    color: white;
+    padding: 0 0 40px 0;
+}
+
+nav {
+    padding: 20px 0;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.nav-links a:hover {
+    opacity: 0.8;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.hero {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.button {
+    display: inline-block;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    border: none;
+    font-size: 1rem;
+}
+
+.button.primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.button.primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* Общие стили для секций */
+section {
+    padding: 60px 0;
+}
+
+section:nth-child(even) {
+    background-color: var(--background);
+}
+
+h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: var(--text);
+}
+
+/* Основные возможности */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature-card h3 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+/* Польза для бизнеса */
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.benefit-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.benefit-card h3 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+/* Боты и веб-приложения */
+.bots-description, .apps-description {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.bots-description ul, .apps-description ul {
+    list-style-position: inside;
+    margin-top: 20px;
+}
+
+.bots-description li, .apps-description li {
+    margin-bottom: 10px;
+}
+
+/* Примеры использования */
+.use-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.use-case-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.use-case-card h3 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+/* Отзывы клиентов */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.testimonial-author {
+    margin-top: 15px;
+    font-style: italic;
+    color: var(--primary);
+}
+
+/* Таблица тарифов */
+.pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.pricing-table th {
+    background-color: var(--primary);
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    border: 1px solid #E2E8F0;
+}
+
+.pricing-table td {
+    padding: 15px;
+    border: 1px solid #E2E8F0;
+    text-align: center;
+}
+
+.pricing-table tr:nth-child(even) {
+    background-color: #f1f5f9;
+}
+
+/* Часто задаваемые вопросы */
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.faq-item h3 {
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+/* Контакты */
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+/* Футер */
+footer {
+    background-color: var(--text);
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+}
+
+footer p {
+    margin-bottom: 10px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+    
+    .features-grid,
+    .benefits-grid,
+    .use-cases-grid,
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
+}

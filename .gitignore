@@ -1,1 +1,1 @@
-Nothing needs to be added to .gitignore since only a single HTML file was added, which is a source file and not a build artifact, dependency, or temporary file.
+Nothing should be ignored in this case, as the changes only include source files (.css and .html) without any build artifacts, dependencies, or temporary files.
