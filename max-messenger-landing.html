@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAX Messenger - Мессенджер нового поколения</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3rem 0;
+        }
+        
+        .hero-text {
+            flex: 1;
+            padding-right: 2rem;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: #2c3e50;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+            color: #3498db;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+        
+        .benefits {
+            background: #f0f7ff;
+            padding: 3rem 0;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+        
+        .benefit-icon {
+            background: #3498db;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .bot-section {
+            background: #fff;
+            padding: 3rem 0;
+        }
+        
+        .bot-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .bot-feature {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .web-apps {
+            background: #f0f7ff;
+            padding: 3rem 0;
+        }
+        
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .app-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+            }
+            
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>MAX Messenger</h1>
+            <p>Мессенджер нового поколения для эффективной коммуникации и бизнеса</p>
+            <a href="#features" class="btn">Попробовать бесплатно</a>
+        </div>
+    </header>
+
+    <section class="hero container">
+        <div class="hero-text">
+            <h2>Революция в цифровой коммуникации</h2>
+            <p>MAX Messenger - это не просто мессенджер. Это мощная платформа для связи, которая объединяет людей, бизнесы и технологии. С нами вы получаете все необходимые инструменты для эффективного взаимодействия в одном месте.</p>
+            <ul>
+                <li>Безопасность и конфиденциальность данных</li>
+                <li>Мгновенные сообщения и звонки</li>
+                <li>Интеграция с бизнес-инструментами</li>
+                <li>Поддержка ботов и веб-приложений</li>
+            </ul>
+            <a href="#" class="btn">Скачать приложение</a>
+        </div>
+        <div class="hero-image">
+            <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%233498db' rx='10'/%3E%3Ccircle cx='50' cy='50' r='20' fill='%23ecf0f1'/%3E%3Ccircle cx='100' cy='50' r='20' fill='%23ecf0f1'/%3E%3Ccircle cx='150' cy='50' r='20' fill='%23ecf0f1'/%3E%3Crect x='50' y='100' width='200' height='40' rx='5' fill='%232ecc71'/%3E%3C/svg%3E" alt="MAX Messenger Interface">
+        </div>
+    </section>
+
+    <section id="features" class="container">
+        <h2>Возможности MAX Messenger</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>Мгновенные сообщения</h3>
+                <p>Обменивайтесь текстовыми сообщениями, голосовыми заметками, файлами и медиа в реальном времени</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📹</div>
+                <h3>Видеоконференции</h3>
+                <p>Проводите групповые видеозвонки с высоким качеством изображения и звука</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Безопасность</h3>
+                <p>Сквозное шифрование обеспечивает полную конфиденциальность ваших переписок</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Кроссплатформенность</h3>
+                <p>Доступ к сообщениям с любого устройства: смартфона, планшета или компьютера</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits container">
+        <h2>Преимущества для бизнеса</h2>
+        <div class="benefit-item">
+            <div class="benefit-icon">✓</div>
+            <div>
+                <h3>Улучшенная продуктивность команды</h3>
+                <p>Объединяйте сотрудников в рабочие группы, делитесь документами и проводите встречи без выхода из мессенджера</p>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon">✓</div>
+            <div>
+                <h3>Эффективное обслуживание клиентов</h3>
+                <p>Интегрируйте чат-боты для автоматического ответа на часто задаваемые вопросы и ускорьте обработку запросов</p>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon">✓</div>
+            <div>
+                <h3>Снижение операционных расходов</h3>
+                <p>Замените несколько инструментов одним решением, что снижает затраты на программное обеспечение и обучение</p>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon">✓</div>
+            <div>
+                <h3>Аналитика и отчетность</h3>
+                <p>Отслеживайте эффективность коммуникаций с помощью встроенных инструментов аналитики</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bot-section container">
+        <h2>Чат-боты в MAX Messenger</h2>
+        <p>Наша платформа поддерживает создание и интеграцию чат-ботов, которые могут автоматизировать многие бизнес-процессы:</p>
+        
+        <div class="bot-features">
+            <div class="bot-feature">
+                <div class="feature-icon">🤖</div>
+                <h3>Поддержка клиентов</h3>
+                <p>Автоматический ответ на часто задаваемые вопросы, направление запросов нужному специалисту</p>
+            </div>
+            <div class="bot-feature">
+                <div class="feature-icon">🛒</div>
+                <h3>Онлайн-продажи</h3>
+                <p>Боты могут принимать заказы, обрабатывать платежи и управлять корзиной покупателя</p>
+            </div>
+            <div class="bot-feature">
+                <div class="feature-icon">📅</div>
+                <h3>Управление задачами</h3>
+                <p>Создание напоминаний, планирование встреч, управление проектами через бота</p>
+            </div>
+            <div class="bot-feature">
+                <div class="feature-icon">📊</div>
+                <h3>Сбор обратной связи</h3>
+                <p>Проведение опросов, сбор отзывов, анализ удовлетворенности клиентов</p>
+            </div>
+        </div>
+        
+        <p style="margin-top: 2rem;">Создавайте ботов с помощью нашего API или используйте готовые решения из каталога. Наша платформа предоставляет интуитивный конструктор ботов даже для пользователей без технических навыков.</p>
+    </section>
+
+    <section class="web-apps container">
+        <h2>Веб-приложения в MAX Messenger</h2>
+        <p>Интегрируйте сторонние сервисы и приложения прямо в интерфейс мессенджера для более эффективной работы:</p>
+        
+        <div class="app-grid">
+            <div class="app-card">
+                <div class="feature-icon">📋</div>
+                <h3>CRM-системы</h3>
+                <p>Интеграция с популярными CRM-платформами для управления клиентскими данными</p>
+            </div>
+            <div class="app-card">
+                <div class="feature-icon">📁</div>
+                <h3>Хранилища файлов</h3>
+                <p>Прямой доступ к облачным хранилищам: Google Drive, Dropbox, OneDrive</p>
+            </div>
+            <div class="app-card">
+                <div class="feature-icon">📈</div>
+                <h3>Аналитические инструменты</h3>
+                <p>Просмотр метрик и отчетов без переключения между приложениями</p>
+            </div>
+            <div class="app-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Бизнес-инструменты</h3>
+                <p>Календари, задачи, тайм-трекеры и другие инструменты управления проектами</p>
+            </div>
+        </div>
+        
+        <p style="margin-top: 2rem;">Веб-приложения позволяют использовать любимые сервисы без переключения между окнами, повышая эффективность работы и концентрацию.</p>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 MAX Messenger. Все права защищены.</p>
+            <p>Сделано с ❤️ для эффективной коммуникации</p>
+            <a href="#" class="btn" style="margin-top: 1rem; background: #3498db;">Начать использовать</a>
+        </div>
+    </footer>
+</body>
+</html>
