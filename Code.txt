@@ -1,0 +1,2150 @@
+```jsx
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { ChevronDown, ChevronUp, CheckCircle, BarChart2, Target, Zap, Users, Smartphone, Layout, MessageCircle, Phone, Globe, ArrowRight, TrendingUp, DollarSign, MapPin, Award, Clock, Layers, ArrowUpRight, Play, Star, Send, Search, Rocket, Shield, Palette, Code, Monitor, MousePointer, Zap as ZapIcon, Headphones, FileText, Lock, Filter, Funnel, PieChart, Activity, Database, Cpu, Share2, Briefcase, UserCheck, GraduationCap, Settings, AlertTriangle, XCircle, HelpCircle, Car, ShieldCheck, TrendingDown, Eye, Factory, Tag, Hourglass, AlertOctagon, UserX, EyeOff, ListFilter, Percent, CreditCard, Handshake, Headset } from 'lucide-react';
+
+// --- Data & Content ---
+
+const SLIDES_DATA = [
+  {
+    id: 1,
+    type: 'cover',
+    logo: "DIGITALION",
+    title: "Как автосалону LADA получать стабильный поток заявок из интернета",
+    subtitle: "Ваш бизнес заслуживает больше клиентов!",
+    tagline: "МАРКЕТИНГОВОЕ АГЕНТСТВО ДЛЯ АВТОДИЛЕРОВ",
+    bullets: [
+      "Контекстная реклама для дилеров",
+      "С фокусом на реальные обращения, а не клики"
+    ],
+    bgGradient: "from-slate-950 via-blue-950/30 to-slate-950"
+  },
+  {
+    id: 2,
+    type: 'specialization',
+    title: "Мы работаем с автосалонами",
+    subtitle: "Экспертиза в автомобильной тематике",
+    points: [
+      { text: "Узкий фокус на автомобильной тематике", icon: Target },
+      { text: "Глубокое знание бренда LADA и его моделей", icon: Car },
+      { text: "Опыт работы с дилерами в регионах", icon: MapPin },
+      { text: "Понимание специфики автобизнеса", icon: Briefcase }
+    ],
+    stats: [
+      { value: "50+", label: "Дилеров" },
+      { value: "5 лет", label: "Опыта" },
+      { value: "12", label: "Регионов" }
+    ],
+    bgGradient: "from-slate-950 via-black to-slate-900"
+  },
+  {
+    id: 3,
+    type: 'market-reality',
+    title: "Реальность рынка LADA",
+    subtitle: "Показываем, что мы внутри кухни",
+    points: [
+      { text: "Высокая конкуренция между дилерами", icon: Users },
+      { text: "Одинаковые модели и цены", icon: Tag },
+      { text: "Акции диктует завод", icon: Factory },
+      { text: "Покупатель долго выбирает", icon: Hourglass },
+      { text: "Заявки дорогие и не всегда качественные", icon: AlertTriangle }
+    ],
+    footer: "Этот слайд вызывает доверие сильнее любых кейсов",
+    bgGradient: "from-black via-red-950/20 to-black"
+  },
+  {
+    id: 4,
+    type: 'client-pains',
+    title: "Типичные проблемы, с которыми к нам приходят",
+    subtitle: "С чем сталкивается 90% автосалонов",
+    intro: "Без обвинений прошлых подрядчиков:",
+    items: [
+      { text: "Реклама есть, а продаж нет", icon: AlertOctagon },
+      { text: "Высокая цена заявки", icon: DollarSign },
+      { text: "Много «нецелевых» обращений", icon: UserX },
+      { text: "Нет понимания, что реально работает", icon: EyeOff },
+      { text: "Подрядчик «просто ведёт рекламу»", icon: HelpCircle }
+    ],
+    footer: "Мы сталкивались с этим десятки раз",
+    bgGradient: "from-neutral-900 via-black to-neutral-900"
+  },
+  {
+    id: 5,
+    type: 'approach',
+    title: "Наш подход к продвижению автосалонов LADA",
+    subtitle: "Философия работы Digitalion",
+    bullets: [
+      "Не гоним трафик ради отчёта",
+      "Работаем под конкретные модели",
+      "Учитываем акции, трейд-ин, кредит",
+      "Оптимизируем рекламу под заявки"
+    ],
+    pillars: [
+      { title: "Системно", icon: Layers, color: "#00f0ff", number: "01" },
+      { title: "Прозрачно", icon: BarChart2, color: "#25D366", number: "02" },
+      { title: "Предсказуемо", icon: Target, color: "#fc3f1d", number: "03" }
+    ],
+    bgGradient: "from-black via-slate-950 to-black"
+  },
+  {
+    id: 6,
+    type: 'outsourcing',
+    title: "Маркетинг на аутсорсе",
+    subtitle: "Команда экспертов по цене одного сотрудника",
+    savings: "Экономия до 200 000 ₽/мес",
+    cards: [
+      {
+        title: "Не нужно обучение",
+        desc: "Специалисты уже знают все инструменты и готовы работать с первого дня",
+        icon: GraduationCap,
+        color: "#00f0ff",
+        stats: "0 дней на адаптацию"
+      },
+      {
+        title: "Полная автономность",
+        desc: "Берем на себя всю ответственность за результат и выполнение KPI",
+        icon: Briefcase,
+        color: "#25D366",
+        stats: "100% ответственность"
+      },
+      {
+        title: "Платные инструменты",
+        desc: "Доступ к премиум-сервисам аналитики без дополнительных затрат",
+        icon: Settings,
+        color: "#fc3f1d",
+        stats: "10+ сервисов включено"
+      },
+      {
+        title: "Команда экспертов",
+        desc: "Директолог, таргетолог, аналитик, дизайнер — все в одном пакете",
+        icon: UserCheck,
+        color: "#0077FF",
+        stats: "4 специалиста"
+      }
+    ],
+    quote: "Вы платите за результат, а не за процесс найма и обучения.",
+    bgGradient: "from-black via-slate-950 to-black"
+  },
+  {
+    id: 7,
+    type: 'landing',
+    title: "Продающий Лендинг",
+    subtitle: "Создаем конверсионные страницы, которые превращают посетителей в покупателей",
+    description: "Каждая модель автомобиля заслуживает отдельного внимания. Мы создаем лендинги, заточенные под конкретную модель или акцию, с максимальной конверсией.",
+    features: [
+      { name: "Конверсия", value: "до 15%", icon: TrendingUp, color: "#00f0ff", desc: "Средняя конверсия" },
+      { name: "Адаптивность", value: "100%", icon: Smartphone, color: "#25D366", desc: "Все устройства" },
+      { name: "Скорость", value: "<1.5 сек", icon: ZapIcon, color: "#fc3f1d", desc: "Загрузка" },
+      { name: "CRM", value: "Интеграция", icon: FileText, color: "#0077FF", desc: "Авто-заявки" }
+    ],
+    benefits: [
+      { title: "Уникальный дизайн", desc: "Индивидуальный дизайн под бренд", icon: Palette },
+      { title: "Продающая структура", desc: "Ведет клиента к покупке", icon: Target },
+      { title: "Мобильная версия", desc: "Адаптация под смартфоны", icon: Monitor },
+      { title: "SEO-оптимизация", desc: "Для лучшего ранжирования", icon: Search },
+      { title: "Формы захвата", desc: "Умные формы контактов", icon: MousePointer },
+      { title: "Техподдержка", desc: "30 дней бесплатно", icon: Headphones }
+    ],
+    included: [
+      "Анализ конкурентов",
+      "Прототипирование",
+      "UI/UX дизайн",
+      "Верстка",
+      "Настройка CRM",
+      "Тестирование",
+      "Обучение",
+      "Гарантия 12 мес"
+    ],
+    bgGradient: "from-black via-cyan-950/20 to-black"
+  },
+  {
+    id: 8,
+    type: 'channels',
+    title: "Экосистема трафика",
+    subtitle: "Комплексное покрытие всех точек контакта с клиентом",
+    channels: [
+      { 
+        name: "Поисковый трафик", 
+        sub: "Яндекс.Директ", 
+        icon: Search, 
+        color: "#fc3f1d",
+        desc: "Горячий спрос. Клиенты, которые уже ищут автомобиль.",
+        stats: "Высокий CTR"
+      },
+      { 
+        name: "Медийная реклама", 
+        sub: "РСЯ + Баннеры", 
+        icon: Monitor, 
+        color: "#00f0ff",
+        desc: "Догоняем пользователя на других сайтах после визита.",
+        stats: "Охват 90%"
+      },
+      { 
+        name: "Социальные сети", 
+        sub: "ВКонтакте", 
+        icon: Users, 
+        color: "#0077FF",
+        desc: "Таргетинг по интересам и гео. Работа с лояльностью.",
+        stats: "Низкий CPL"
+      },
+      { 
+        name: "SEO Продвижение", 
+        sub: "Органика", 
+        icon: TrendingUp, 
+        color: "#25D366",
+        desc: "Долгосрочная инвестиция. Бесплатный трафик в будущем.",
+        stats: "LTV +30%"
+      }
+    ],
+    quote: "Синергия каналов снижает общую стоимость лида на 40%.",
+    bgGradient: "from-black via-purple-950/20 to-black"
+  },
+  {
+    id: 9,
+    type: 'logic',
+    title: "Архитектура кампаний",
+    subtitle: "Многоступенчатая система фильтрации и привлечения",
+    stages: [
+      {
+        title: "1. Сбор трафика",
+        desc: "Охват всех возможных запросов",
+        items: ["Брендовые запросы", "Модельные запросы", "Конкуренты", "Гео-запросы"],
+        icon: Database,
+        color: "from-blue-500 to-cyan-400"
+      },
+      {
+        title: "2. Фильтрация",
+        desc: "Отсечение нецелевого мусора",
+        items: ["Минус-слова", "Кросс-минусовка", "Корректировки", "Сегментация"],
+        icon: Filter,
+        color: "from-cyan-400 to-emerald-400"
+      },
+      {
+        title: "3. Конверсия",
+        desc: "Превращение клика в заявку",
+        items: ["Релевантные объявления", "Посадочная под запрос", "Ретаргетинг", "Аналитика"],
+        icon: Target,
+        color: "from-emerald-400 to-green-400"
+      }
+    ],
+    models: ["Vesta", "Granta", "Niva", "Largus", "XRAY"],
+    techStack: ["Яндекс.Метрика", "Call-tracking", "CRM", "Скрипты"],
+    bgGradient: "from-neutral-900 via-black to-neutral-900"
+  },
+  // --- CASES ---
+  {
+    id: 10,
+    type: 'case',
+    client: "Автосалон в Тольятти",
+    region: "Тольятти",
+    period: "3 месяца",
+    goal: "Получать больше целевых заявок. Снизить стоимость заявки.",
+    before: ["Высокая цена заявки", "Много нецелевых обращений", "Реклама без структуры", "Слабая аналитика"],
+    actions: ["Аудит сайта и конкурентов", "Доработка сайта для конверсии", "Новые акционные офферы", "Таргетинг по полу/возрасту"],
+    results: [
+      { label: "Заявок", value: "x2", sub: "Рост в 2 раза", icon: TrendingUp, color: "#00f0ff" },
+      { label: "CPL", value: "2100 ₽", sub: "Было 3700 ₽", icon: DollarSign, color: "#25D366" },
+      { label: "Оффлайн", value: "+30%", sub: "Приток клиентов", icon: Users, color: "#fc3f1d" }
+    ],
+    testimonial: "«За 3 месяца работы вывели нас на доход с 200 000 до 1 100 000»",
+    bgGradient: "from-black via-slate-950 to-black"
+  },
+  {
+    id: 11,
+    type: 'case',
+    client: "Автосалон (Премиум)",
+    region: "Москва (РФ)",
+    period: "Более года",
+    goal: "Заявки на заказ авто. CPL до 3000 ₽.",
+    before: ["Высокая цена лида", "Один лендинг на все модели", "Слабая аналитика"],
+    actions: ["Отдельный лендинг под каждую модель", "Точечная подача вместо обобщенки", "Отдельные РК в Директе", "Фокус на эффективных авто"],
+    results: [
+      { label: "CPL", value: "1800 ₽", sub: "Было 5200 ₽", icon: DollarSign, color: "#25D366" },
+      { label: "Продажи", value: "+256%", sub: "Рост с контекста", icon: TrendingUp, color: "#00f0ff" },
+      { label: "Конверсия", value: "Выросла", sub: "Без увеличения бюджета", icon: BarChart2, color: "#fc3f1d" }
+    ],
+    testimonial: "«Продажи с контекстной рекламы увеличились на 256%»",
+    bgGradient: "from-black via-slate-950 to-black"
+  },
+  {
+    id: 12,
+    type: 'case',
+    client: "Автосалон",
+    region: "Архангельск",
+    period: "8 месяцев",
+    goal: "Целевой трафик. Увеличить охват в Яндекс.",
+    before: ["Низкое качество лидов", "Дорогой клик", "Высокая стоимость заявки"],
+    actions: ["Поиск + РСЯ с баннерами", "Ретаргетинг и ремаркетинг", "Отдельные кампании под акции", "Узкоспециализированные запросы"],
+    results: [
+      { label: "CPL", value: "3400 ₽", sub: "Было 9300 ₽", icon: DollarSign, color: "#25D366" },
+      { label: "Покупки", value: "+30%", sub: "Рост количества", icon: TrendingUp, color: "#00f0ff" },
+      { label: "Бренд", value: "Узнаваемость", sub: "Охват аудитории", icon: Star, color: "#fc3f1d" }
+    ],
+    testimonial: "«Количество покупок увеличились на 30% с момента начала работы»",
+    bgGradient: "from-black via-slate-950 to-black"
+  },
+  {
+    id: 13,
+    type: 'case',
+    client: "Автосалон",
+    region: "Иркутская область",
+    period: "6 месяцев",
+    goal: "Новая стратегия. Улучшить качество лидов. Снизить цену.",
+    before: ["97% трафика с автостратегий", "Нет рычагов оптимизации", "Падение эффективности"],
+    actions: ["Ручная оптимизация связок", "Подмена контента под регион", "Выделение ТОП-50 фраз", "Корректировка бюджетов"],
+    results: [
+      { label: "Конверсия", value: "0.8% → 5%", sub: "Рост в 6 раз", icon: TrendingUp, color: "#00f0ff" },
+      { label: "Позиции", value: "Спецразмещение", sub: "Первые места", icon: Award, color: "#fc3f1d" },
+      { label: "Трафик", value: "Целевой", sub: "Высокое качество", icon: Target, color: "#25D366" }
+    ],
+    testimonial: "«Повысили конверсию с 0,8% до 5%»",
+    bgGradient: "from-black via-slate-950 to-black"
+  },
+  // --- END CASES ---
+  {
+    id: 14,
+    type: 'analytics',
+    title: "Аналитика и контроль",
+    points: [
+      "100% прозрачность бюджета",
+      "Еженедельные отчеты",
+      "Стоимость каждой заявки (CPL)",
+      "Сквозная аналитика до продажи"
+    ],
+    metrics: [
+      { label: "Отчетов в месяц", value: "4" },
+      { label: "Метрик отслеживаем", value: "50+" },
+      { label: "Время на ответ", value: "<1 часа" }
+    ],
+    bgGradient: "from-black via-cyan-950/20 to-black"
+  },
+  {
+    id: 15,
+    type: 'steps',
+    title: "С чего начнем?",
+    steps: [
+      { num: "01", title: "Созвон", desc: "15 минут на выявление потребностей", icon: Phone },
+      { num: "02", title: "Аудит", desc: "Бесплатный разбор текущей ситуации", icon: BarChart2 },
+      { num: "03", title: "План", desc: "Стратегия развития на 3 месяца", icon: Target }
+    ],
+    footer: "Без обязательств и привязок.",
+    bgGradient: "from-black via-blue-950/20 to-black"
+  },
+  {
+    id: 16,
+    type: 'contact',
+    title: "Контакты",
+    subtitle: "Обсудим ваш проект уже сегодня",
+    phone: "8 993 938 17 20",
+    site: "digitalion.ru",
+    email: "office@digitalion.ru",
+    bgGradient: "from-neutral-900 via-slate-900 to-neutral-900"
+  }
+];
+
+// --- Animation Variants ---
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 60 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+const slideInLeft = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+const slideInRight = {
+  hidden: { opacity: 0, x: 100 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+// --- Components ---
+
+const AnimatedBackground = ({ currentSlide }) => {
+  const currentBg = SLIDES_DATA[currentSlide]?.bgGradient || "from-black via-slate-950 to-black";
+  
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentSlide}
+        className="fixed inset-0 z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className={`absolute inset-0 bg-gradient-to-br ${currentBg}`} />
+        
+        {/* Animated blobs */}
+        <motion.div 
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            x: [0, 50, 0],
+            y: [0, 30, 0]
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            x: [0, -50, 0],
+            y: [0, -30, 0]
+          }}
+          transition={{ duration: 10, repeat: Infinity }}
+        />
+        <motion.div 
+          className="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1, 1.3, 1],
+            rotate: [0, 180, 360]
+          }}
+          transition={{ duration: 12, repeat: Infinity }}
+        />
+        
+        {/* Noise texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+const SlideWrapper = ({ children, className = "", isActive }) => (
+  <section className={`h-screen w-full snap-start flex flex-col justify-center items-center relative overflow-hidden py-12 ${className}`}>
+    <AnimatePresence>
+      {isActive && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-transparent pointer-events-none"
+        />
+      )}
+    </AnimatePresence>
+    {children}
+  </section>
+);
+
+const ProgressBar = ({ current, total }) => {
+  const progress = ((current + 1) / total) * 100;
+  const springProgress = useSpring(progress, { stiffness: 100, damping: 30 });
+  
+  return (
+    <motion.div 
+      className="fixed top-0 left-0 w-full h-1 z-50 bg-gray-900"
+      style={{ scaleX: springProgress }}
+    >
+      <div className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 shadow-[0_0_20px_#22d3ee]" />
+    </motion.div>
+  );
+};
+
+// --- COVER SLIDE ---
+
+const CoverSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center relative z-10"
+      variants={staggerContainer}
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+    >
+      <div className="max-w-5xl mx-auto w-full text-center">
+        {/* Logo */}
+        <motion.div 
+          className="mb-8"
+          variants={fadeInUp}
+        >
+          <motion.h1 
+            className="text-6xl md:text-8xl font-black tracking-tight"
+            style={{
+              background: 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #3b82f6 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}
+            animate={{ 
+              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+            }}
+            transition={{ duration: 5, repeat: Infinity }}
+            style={{ backgroundSize: '200% 200%' }}
+          >
+            {data.logo}
+          </motion.h1>
+          <motion.div 
+            className="w-24 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-4 shadow-[0_0_20px_#22d3ee]"
+            variants={scaleIn}
+          />
+        </motion.div>
+
+        {/* Main Title */}
+        <motion.h2 
+          className="text-2xl md:text-4xl font-bold text-white mb-6 leading-tight"
+          variants={fadeInUp}
+        >
+          {data.title}
+        </motion.h2>
+
+        {/* Bullet Points */}
+        <motion.div 
+          className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-8"
+          variants={staggerContainer}
+        >
+          {data.bullets.map((bullet, i) => (
+            <motion.div 
+              key={i}
+              className="flex items-center gap-3 text-gray-300 text-sm md:text-base"
+              variants={fadeIn}
+            >
+              <div className="w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_10px_#22d3ee]"></div>
+              {bullet}
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Subtitle */}
+        <motion.p 
+          className="text-lg md:text-xl text-gray-400 mb-6"
+          variants={fadeInUp}
+        >
+          {data.subtitle}
+        </motion.p>
+
+        {/* Tagline */}
+        <motion.p 
+          className="text-sm md:text-base text-cyan-400/80 font-medium tracking-widest uppercase"
+          variants={fadeIn}
+        >
+          {data.tagline}
+        </motion.p>
+
+        {/* Scroll Hint */}
+        <motion.div 
+          className="mt-12"
+          variants={fadeInUp}
+        >
+          <motion.div 
+            className="inline-flex items-center gap-2 text-gray-500 text-sm"
+            whileHover={{ color: '#00f0ff' }}
+          >
+            <span>Листайте вниз</span>
+            <motion.div 
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <ChevronDown size={16} />
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- SPECIALIZATION SLIDE ---
+
+const SpecializationSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center relative z-10"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <div className="max-w-6xl mx-auto w-full">
+        
+        {/* Header Section with Lada Branding */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-6">
+          <div className="flex-1">
+            <motion.div 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full mb-6 backdrop-blur-sm"
+              variants={fadeIn}
+            >
+              <ShieldCheck className="text-cyan-400" size={16} />
+              <span className="text-cyan-400 font-bold tracking-widest text-xs uppercase">Наша экспертиза</span>
+            </motion.div>
+
+            <motion.h2 
+              className="text-4xl md:text-6xl font-black text-white mb-3 leading-tight"
+              variants={fadeInUp}
+            >
+              {data.title}
+            </motion.h2>
+            
+            <motion.p 
+              className="text-lg md:text-xl text-gray-400"
+              variants={fadeIn}
+            >
+              {data.subtitle}
+            </motion.p>
+          </div>
+
+          {/* LADA Branding Block */}
+          <motion.div 
+            className="flex flex-col items-end"
+            variants={slideInRight}
+          >
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              <div className="relative px-6 py-3 bg-black/80 backdrop-blur-xl rounded-lg border border-white/10 flex items-center gap-3">
+                <Car className="text-cyan-400" size={24} />
+                <span className="text-2xl font-black text-white tracking-widest italic">LADA</span>
+              </div>
+            </div>
+            <motion.p 
+              className="text-xs text-gray-500 mt-2 font-medium uppercase tracking-wider"
+              variants={fadeIn}
+            >
+              Официальные дилеры
+            </motion.p>
+          </motion.div>
+        </div>
+
+        {/* Cards Grid */}
+        <div className="grid md:grid-cols-2 gap-4 mb-8">
+          {data.points.map((point, i) => (
+            <motion.div 
+              key={i}
+              className="group p-5 bg-white/5 backdrop-blur-md rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300"
+              variants={scaleIn}
+              whileHover={{ y: -3, backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+            >
+              <div className="flex items-start gap-4">
+                <motion.div 
+                  className="p-3 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-600/20 text-cyan-400 group-hover:scale-110 transition-transform duration-300"
+                  whileHover={{ rotate: 5 }}
+                >
+                  <point.icon size={24} strokeWidth={1.5} />
+                </motion.div>
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">
+                    {point.text}
+                  </h3>
+                  <div className="h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-500 rounded-full"></div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Stats Row */}
+        <motion.div 
+          className="grid grid-cols-3 gap-4 p-5 bg-gradient-to-r from-white/5 to-white/0 rounded-xl border border-white/5 backdrop-blur-sm"
+          variants={fadeInUp}
+        >
+          {data.stats.map((stat, i) => (
+            <motion.div 
+              key={i} 
+              className="text-center border-r border-white/5 last:border-0"
+              variants={scaleIn}
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.div 
+                className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 mb-1"
+                whileHover={{ scale: 1.1 }}
+              >
+                {stat.value}
+              </motion.div>
+              <div className="text-xs text-gray-500 font-medium uppercase tracking-wider">{stat.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- MARKET REALITY SLIDE ---
+
+const MarketRealitySlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center relative z-20"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <div className="max-w-5xl mx-auto w-full">
+        
+        {/* Header */}
+        <motion.div 
+          className="mb-12"
+          variants={fadeInUp}
+        >
+          <motion.h2 
+            className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight"
+          >
+            {data.title}
+          </motion.h2>
+          <motion.p 
+            className="text-lg md:text-xl text-gray-400"
+          >
+            {data.subtitle}
+          </motion.p>
+        </motion.div>
+
+        {/* Points Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {data.points.map((point, i) => (
+            <motion.div 
+              key={i}
+              className="group p-6 bg-white/5 backdrop-blur-md rounded-2xl border border-white/5 hover:border-red-500/30 transition-all duration-300"
+              variants={scaleIn}
+              whileHover={{ y: -5, backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
+            >
+              <div className="flex flex-col items-start gap-4">
+                <motion.div 
+                  className="p-3 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-600/20 text-red-400 group-hover:scale-110 transition-transform duration-300"
+                  whileHover={{ rotate: -5 }}
+                >
+                  <point.icon size={28} strokeWidth={1.5} />
+                </motion.div>
+                <div>
+                  <h3 className="text-lg font-bold text-white group-hover:text-red-400 transition-colors">
+                    {point.text}
+                  </h3>
+                  <div className="h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-500 rounded-full mt-2"></div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Footer Note */}
+        <motion.div 
+          className="p-6 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 rounded-xl border border-cyan-500/20 backdrop-blur-sm flex items-center gap-4"
+          variants={fadeInUp}
+        >
+          <div className="p-3 bg-cyan-500/20 rounded-full text-cyan-400">
+            <ShieldCheck size={24} />
+          </div>
+          <p className="text-cyan-100 font-medium text-lg">
+            {data.footer}
+          </p>
+        </motion.div>
+      </div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- CLIENT PAINS SLIDE ---
+
+const ClientPainsSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <div className="max-w-6xl mx-auto w-full">
+        {/* Header */}
+        <motion.div className="text-center mb-12">
+          <motion.h2 
+            className="text-4xl md:text-6xl font-black text-white mb-3"
+            variants={fadeInUp}
+          >
+            {data.title}
+          </motion.h2>
+          <motion.p 
+            className="text-lg text-gray-400 font-medium"
+            variants={fadeIn}
+          >
+            {data.subtitle}
+          </motion.p>
+        </motion.div>
+
+        {/* Intro Text */}
+        <motion.div 
+          className="text-center mb-10"
+          variants={fadeIn}
+        >
+          <p className="text-lg text-cyan-400/80 font-medium bg-cyan-950/30 inline-block px-6 py-2 rounded-full border border-cyan-500/20">
+            {data.intro}
+          </p>
+        </motion.div>
+
+        {/* Cards Grid */}
+        <motion.div 
+          className="grid md:grid-cols-2 gap-6 mb-12"
+          variants={staggerContainer}
+        >
+          {data.items.map((item, i) => (
+            <motion.div 
+              key={i} 
+              className="group relative p-8 rounded-2xl bg-black border border-white/5 overflow-hidden cursor-pointer"
+              variants={scaleIn}
+              whileHover={{ y: -3, scale: 1.02 }}
+            >
+              {/* Red Glow Effect */}
+              <motion.div 
+                className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
+                style={{ background: 'radial-gradient(circle at top right, #ef4444, transparent 70%)' }}
+              />
+              
+              <motion.div 
+                className="absolute inset-0 border-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{ borderColor: '#ef4444', boxShadow: '0 0 30px -5px rgba(239, 68, 68, 0.4)' }}
+              />
+
+              <div className="relative z-10 flex items-start gap-6">
+                <motion.div 
+                  className="p-4 rounded-xl bg-red-500/10 shrink-0"
+                  style={{ color: '#ef4444' }}
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <item.icon size={32} />
+                </motion.div>
+                
+                <div className="flex-1">
+                  <motion.h3 
+                    className="text-xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors"
+                    whileHover={{ x: 5 }}
+                  >
+                    {item.text}
+                  </motion.h3>
+                  <div className="h-1 w-0 group-hover:w-full bg-red-500/50 rounded-full transition-all duration-500"></div>
+                </div>
+              </div>
+
+              {/* Decorative Elements */}
+              <div className="absolute -right-6 -bottom-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                <item.icon size={120} style={{ color: '#ef4444' }} />
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Footer Phrase */}
+        <motion.div 
+          className="text-center p-6 bg-gradient-to-r from-neutral-900/50 to-black/50 rounded-xl border border-white/5 backdrop-blur-sm max-w-3xl mx-auto"
+          variants={fadeInUp}
+        >
+          <p className="text-lg text-gray-300 italic flex items-center justify-center gap-3">
+            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+            {data.footer}
+            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+          </p>
+        </motion.div>
+      </div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- APPROACH SLIDE ---
+
+const ApproachSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center relative z-20"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <div className="max-w-6xl mx-auto w-full">
+        
+        {/* Header */}
+        <motion.div className="text-center mb-16">
+          <motion.h2 
+            className="text-4xl md:text-7xl font-black text-white mb-4 leading-tight"
+            variants={fadeInUp}
+          >
+            {data.title}
+          </motion.h2>
+          <motion.p 
+            className="text-lg md:text-xl text-cyan-400 font-medium"
+            variants={fadeIn}
+          >
+            {data.subtitle}
+          </motion.p>
+        </motion.div>
+
+        {/* Content Grid: Bullets Left, Pillars Right/Bottom */}
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
+          
+          {/* Left: Bullet Points */}
+          <motion.div 
+            className="space-y-6"
+            variants={staggerContainer}
+          >
+            {data.bullets.map((bullet, i) => (
+              <motion.div 
+                key={i}
+                className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all duration-300"
+                variants={fadeInUp}
+                whileHover={{ x: 5, backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+              >
+                <div className="mt-1">
+                  <CheckCircle className="text-cyan-400" size={24} />
+                </div>
+                <p className="text-lg text-gray-200 font-medium">{bullet}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Right: Three Pillars Cards */}
+          <motion.div 
+            className="grid grid-cols-1 gap-4"
+            variants={staggerContainer}
+          >
+            {data.pillars.map((pillar, i) => (
+              <motion.div 
+                key={i}
+                className="group relative p-6 rounded-2xl bg-neutral-900/80 border border-white/5 overflow-hidden backdrop-blur-sm"
+                variants={scaleIn}
+                whileHover={{ y: -5, scale: 1.02 }}
+              >
+                {/* Colored Glow */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+                  style={{ background: `radial-gradient(circle at top right, ${pillar.color}, transparent 70%)` }}
+                />
+                
+                <div className="relative z-10 flex items-center gap-6">
+                  {/* Icon Box */}
+                  <motion.div 
+                    className="p-4 rounded-xl shrink-0"
+                    style={{ backgroundColor: `${pillar.color}15` }}
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <pillar.icon size={32} style={{ color: pillar.color }} />
+                  </motion.div>
+
+                  {/* Text Content */}
+                  <div className="flex-1">
+                    <motion.h3 
+                      className="text-3xl font-black text-white mb-1 group-hover:text-cyan-400 transition-colors"
+                      whileHover={{ x: 5 }}
+                    >
+                      {pillar.title}
+                    </motion.h3>
+                  </div>
+
+                  {/* Number */}
+                  <div className="text-5xl font-black text-white/5 group-hover:text-white/10 transition-colors">
+                    {pillar.number}
+                  </div>
+                </div>
+
+                {/* Bottom Border Accent */}
+                <motion.div 
+                  className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: pillar.color }}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- OUTSOURCING SLIDE ---
+
+const OutsourcingSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <motion.div className="text-center mb-10">
+        <motion.h2 
+          className="text-4xl md:text-6xl font-black text-white mb-3"
+          variants={fadeInUp}
+        >
+          {data.title}
+        </motion.h2>
+        <motion.p 
+          className="text-lg text-cyan-400 font-medium"
+          variants={fadeIn}
+        >
+          {data.subtitle}
+        </motion.p>
+      </motion.div>
+
+      {/* Savings Badge */}
+      <motion.div 
+        className="text-center mb-6"
+        variants={scaleIn}
+      >
+        <motion.div 
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-400/20 to-emerald-500/20 rounded-full border border-green-400/30"
+          whileHover={{ scale: 1.05 }}
+        >
+          <DollarSign className="text-green-400" size={20} />
+          <span className="text-green-400 font-bold text-base">{data.savings}</span>
+          <TrendingUp className="text-green-400" size={20} />
+        </motion.div>
+      </motion.div>
+
+      <motion.div 
+        className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-8"
+        variants={staggerContainer}
+      >
+        {data.cards.map((card, i) => (
+          <motion.div 
+            key={i} 
+            className="group relative p-6 rounded-2xl bg-neutral-900 border border-white/5 overflow-hidden cursor-pointer"
+            variants={scaleIn}
+            whileHover={{ y: -3, scale: 1.02 }}
+          >
+            {/* Background Gradient on Hover */}
+            <motion.div 
+              className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+              style={{ background: `radial-gradient(circle at top right, ${card.color}, transparent 70%)` }}
+            />
+            
+            {/* Border Glow */}
+            <motion.div 
+              className="absolute inset-0 border-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              style={{ borderColor: card.color, boxShadow: `0 0 30px -5px ${card.color}40` }}
+            />
+
+            <div className="relative z-10 flex flex-col h-full justify-between">
+              <div className="flex justify-between items-start mb-4">
+                <motion.div 
+                  className="p-3 rounded-xl"
+                  style={{ backgroundColor: `${card.color}15` }}
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <card.icon size={24} style={{ color: card.color }} />
+                </motion.div>
+                <motion.div 
+                  className="px-2 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/5 text-white"
+                  whileHover={{ scale: 1.1, backgroundColor: card.color, color: '#000' }}
+                >
+                  {card.stats}
+                </motion.div>
+              </div>
+
+              <div>
+                <motion.h3 
+                  className="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors"
+                  whileHover={{ x: 5 }}
+                >
+                  {card.title}
+                </motion.h3>
+                <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+                  {card.desc}
+                </p>
+              </div>
+            </div>
+
+            {/* Decorative Elements */}
+            <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+              <card.icon size={80} style={{ color: card.color }} />
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      <motion.div 
+        className="text-center p-4 bg-gradient-to-r from-neutral-900/50 to-black/50 rounded-xl border border-white/5 backdrop-blur-sm max-w-2xl mx-auto"
+        variants={fadeInUp}
+      >
+        <p className="text-base text-gray-300 italic flex items-center justify-center gap-2">
+          <Share2 className="text-cyan-400" size={16} />
+          {data.quote}
+          <Share2 className="text-cyan-400" size={16} />
+        </p>
+      </motion.div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- LANDING PAGE SLIDE ---
+
+const LandingSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center py-4"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      {/* Header Section */}
+      <motion.div 
+        className="text-center mb-6"
+        variants={fadeInUp}
+      >
+        <motion.div 
+          className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-400/10 rounded-full border border-cyan-400/30 mb-4"
+          whileHover={{ scale: 1.05 }}
+        >
+          <Rocket className="text-cyan-400" size={14} />
+          <span className="text-cyan-400 text-xs font-bold uppercase tracking-widest">Премиум разработка</span>
+        </motion.div>
+        
+        <motion.h2 
+          className="text-3xl md:text-5xl font-black text-white mb-3"
+          variants={fadeInUp}
+        >
+          {data.title}
+        </motion.h2>
+        
+        <motion.p 
+          className="text-lg md:text-xl text-cyan-400 mb-2 font-medium"
+          variants={fadeInUp}
+        >
+          {data.subtitle}
+        </motion.p>
+        
+        <motion.p 
+          className="text-sm md:text-base text-gray-400 max-w-2xl mx-auto"
+          variants={fadeIn}
+        >
+          {data.description}
+        </motion.p>
+      </motion.div>
+
+      {/* Stats Grid - Compact */}
+      <motion.div 
+        className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"
+        variants={staggerContainer}
+      >
+        {data.features.map((feature, i) => (
+          <motion.div 
+            key={i}
+            className="relative p-4 bg-gradient-to-br from-neutral-900 to-black rounded-xl border border-white/10 overflow-hidden group cursor-pointer"
+            variants={scaleIn}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
+            <motion.div 
+              className="absolute top-0 right-0 w-16 h-16 opacity-10 group-hover:opacity-20 transition-opacity"
+              style={{ color: feature.color }}
+            >
+              <feature.icon size={60} />
+            </motion.div>
+            
+            <motion.div 
+              className="relative z-10"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <feature.icon size={24} style={{ color: feature.color }} className="mb-2" />
+            </motion.div>
+            
+            <div className="relative z-10">
+              <motion.div 
+                className="text-2xl md:text-3xl font-black text-white mb-1"
+                style={{ color: feature.color }}
+                whileHover={{ scale: 1.05 }}
+              >
+                {feature.value}
+              </motion.div>
+              <div className="text-sm font-bold text-white mb-0.5">{feature.name}</div>
+              <div className="text-xs text-gray-500">{feature.desc}</div>
+            </div>
+            
+            <motion.div 
+              className="absolute bottom-0 left-0 w-full h-0.5"
+              style={{ backgroundColor: feature.color }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Benefits Section - Compact 3x2 Grid */}
+      <motion.div 
+        className="mb-6"
+        variants={fadeInUp}
+      >
+        <motion.h3 
+          className="text-xl md:text-2xl font-bold text-white text-center mb-4"
+          variants={fadeIn}
+        >
+          Почему выбирают наши лендинги
+        </motion.h3>
+        
+        <motion.div 
+          className="grid grid-cols-2 md:grid-cols-3 gap-3"
+          variants={staggerContainer}
+        >
+          {data.benefits.map((benefit, i) => (
+            <motion.div 
+              key={i}
+              className="p-4 bg-neutral-900/50 rounded-xl border border-white/5 hover:border-cyan-400/50 transition-all group cursor-pointer"
+              variants={scaleIn}
+              whileHover={{ y: -3, backgroundColor: 'rgba(34, 211, 238, 0.05)' }}
+            >
+              <motion.div 
+                className="w-8 h-8 bg-cyan-400/20 rounded-lg flex items-center justify-center mb-2 group-hover:bg-cyan-400/30 transition-colors"
+                whileHover={{ rotate: 360, scale: 1.1 }}
+                transition={{ duration: 0.6 }}
+              >
+                <benefit.icon className="text-cyan-400" size={18} />
+              </motion.div>
+              <motion.h4 
+                className="text-sm font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors"
+                whileHover={{ x: 5 }}
+              >
+                {benefit.title}
+              </motion.h4>
+              <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">{benefit.desc}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
+
+      {/* What's Included Section - Compact */}
+      <motion.div 
+        className="mb-6 p-6 bg-gradient-to-br from-neutral-900/80 to-black rounded-xl border border-cyan-400/20"
+        variants={fadeInUp}
+        whileHover={{ borderColor: '#00f0ff' }}
+      >
+        <motion.h3 
+          className="text-lg font-bold text-white mb-4 flex items-center gap-2"
+          variants={fadeIn}
+        >
+          <CheckCircle className="text-cyan-400" size={20} />
+          Что входит в разработку
+        </motion.h3>
+        
+        <motion.div 
+          className="grid grid-cols-2 md:grid-cols-4 gap-2"
+          variants={staggerContainer}
+        >
+          {data.included.map((item, i) => (
+            <motion.div 
+              key={i}
+              className="flex items-center gap-2 p-2 bg-black/50 rounded-lg border border-white/5"
+              variants={fadeInUp}
+              whileHover={{ x: 3, borderColor: '#00f0ff', backgroundColor: 'rgba(34, 211, 238, 0.1)' }}
+            >
+              <motion.div
+                whileHover={{ scale: 1.3, rotate: 15 }}
+              >
+                <CheckCircle className="text-cyan-400 shrink-0" size={14} />
+              </motion.div>
+              <span className="text-xs text-gray-300 group-hover:text-white transition-colors">{item}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+const FeatureSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 flex flex-col items-center text-center"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <motion.div 
+        className="w-16 h-16 bg-cyan-400/20 rounded-full flex items-center justify-center mb-6"
+        variants={scaleIn}
+        whileHover={{ rotate: 180, scale: 1.1 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Layout className="text-cyan-400" size={32} />
+      </motion.div>
+      <motion.h2 
+        className="text-4xl md:text-5xl font-bold text-white mb-4"
+        variants={fadeInUp}
+      >
+        {data.title}
+      </motion.h2>
+      <motion.p 
+        className="text-lg text-gray-400 max-w-2xl mb-8"
+        variants={fadeInUp}
+      >
+        {data.desc}
+      </motion.p>
+      
+      <motion.div 
+        className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl"
+        variants={staggerContainer}
+      >
+        {data.features.map((feat, i) => (
+          <motion.div 
+            key={i} 
+            className="p-5 bg-black rounded-xl border border-white/10 group cursor-pointer"
+            variants={scaleIn}
+            whileHover={{ y: -3, borderColor: '#00f0ff' }}
+          >
+            <motion.span 
+              className="block text-2xl font-bold text-cyan-400 mb-1 group-hover:scale-110 transition-transform"
+            >
+              {feat.value}
+            </motion.span>
+            <span className="text-sm text-white font-medium">{feat.name}</span>
+          </motion.div>
+        ))}
+      </motion.div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- CHANNELS SLIDE ---
+
+const ChannelsSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <motion.div className="text-center mb-10">
+        <motion.h2 
+          className="text-4xl md:text-6xl font-black text-white mb-3"
+          variants={fadeInUp}
+        >
+          {data.title}
+        </motion.h2>
+        <motion.p 
+          className="text-lg text-cyan-400 font-medium"
+          variants={fadeIn}
+        >
+          {data.subtitle}
+        </motion.p>
+      </motion.div>
+
+      <motion.div 
+        className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-8"
+        variants={staggerContainer}
+      >
+        {data.channels.map((channel, i) => (
+          <motion.div 
+            key={i} 
+            className="group relative p-6 rounded-2xl bg-neutral-900 border border-white/5 overflow-hidden cursor-pointer"
+            variants={scaleIn}
+            whileHover={{ y: -3, scale: 1.02 }}
+          >
+            {/* Background Gradient on Hover */}
+            <motion.div 
+              className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+              style={{ background: `radial-gradient(circle at top right, ${channel.color}, transparent 70%)` }}
+            />
+            
+            {/* Border Glow */}
+            <motion.div 
+              className="absolute inset-0 border-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              style={{ borderColor: channel.color, boxShadow: `0 0 30px -5px ${channel.color}40` }}
+            />
+
+            <div className="relative z-10 flex flex-col h-full justify-between">
+              <div className="flex justify-between items-start mb-4">
+                <motion.div 
+                  className="p-3 rounded-xl"
+                  style={{ backgroundColor: `${channel.color}15` }}
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <channel.icon size={24} style={{ color: channel.color }} />
+                </motion.div>
+                <motion.div 
+                  className="px-2 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/5 text-white"
+                  whileHover={{ scale: 1.1, backgroundColor: channel.color, color: '#000' }}
+                >
+                  {channel.stats}
+                </motion.div>
+              </div>
+
+              <div>
+                <motion.h3 
+                  className="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors"
+                  whileHover={{ x: 5 }}
+                >
+                  {channel.name}
+                </motion.h3>
+                <p className="text-cyan-400/80 font-medium mb-2 text-sm">{channel.sub}</p>
+                <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+                  {channel.desc}
+                </p>
+              </div>
+            </div>
+
+            {/* Decorative Elements */}
+            <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+              <channel.icon size={80} style={{ color: channel.color }} />
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      <motion.div 
+        className="text-center p-4 bg-gradient-to-r from-neutral-900/50 to-black/50 rounded-xl border border-white/5 backdrop-blur-sm max-w-2xl mx-auto"
+        variants={fadeInUp}
+      >
+        <p className="text-base text-gray-300 italic flex items-center justify-center gap-2">
+          <Share2 className="text-cyan-400" size={16} />
+          {data.quote}
+          <Share2 className="text-cyan-400" size={16} />
+        </p>
+      </motion.div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- LOGIC SLIDE ---
+
+const LogicSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center py-4"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <motion.div className="text-center mb-8">
+        <motion.h2 
+          className="text-4xl md:text-6xl font-black text-white mb-3"
+          variants={fadeInUp}
+        >
+          {data.title}
+        </motion.h2>
+        <motion.p 
+          className="text-lg text-cyan-400 font-medium"
+          variants={fadeIn}
+        >
+          {data.subtitle}
+        </motion.p>
+      </motion.div>
+
+      {/* Funnel Visualization */}
+      <motion.div 
+        className="grid md:grid-cols-3 gap-4 mb-6 relative"
+        variants={staggerContainer}
+      >
+        {/* Connecting Lines (Desktop) */}
+        <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-900 via-cyan-900 to-emerald-900 -z-10 transform -translate-y-1/2"></div>
+
+        {data.stages.map((stage, i) => (
+          <motion.div 
+            key={i}
+            className="relative p-6 rounded-xl bg-black/80 border border-white/10 backdrop-blur-sm overflow-hidden group"
+            variants={scaleIn}
+            whileHover={{ y: -8, scale: 1.02 }}
+          >
+            {/* Gradient Border Top */}
+            <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${stage.color}`}></div>
+            
+            <div className="flex items-center gap-3 mb-4">
+              <motion.div 
+                className="p-2 rounded-lg bg-white/5"
+                whileHover={{ rotate: 360, scale: 1.1 }}
+                transition={{ duration: 0.6 }}
+              >
+                <stage.icon size={24} className="text-white" />
+              </motion.div>
+              <span className="text-3xl font-black text-white/10 absolute top-3 right-3">{i + 1}</span>
+            </div>
+
+            <h3 className="text-lg font-bold text-white mb-1">{stage.title}</h3>
+            <p className="text-cyan-400/80 text-xs font-medium mb-4 uppercase tracking-wider">{stage.desc}</p>
+
+            <ul className="space-y-2">
+              {stage.items.map((item, idx) => (
+                <motion.li 
+                  key={idx}
+                  className="flex items-center gap-2 text-gray-400 text-xs group-hover:text-white transition-colors"
+                  initial={{ x: -10, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.5 + (idx * 0.1) }}
+                >
+                  <div className={`w-1 h-1 rounded-full bg-gradient-to-r ${stage.color}`}></div>
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+
+            {/* Hover Glow */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${stage.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none`}></div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Models & Tech Stack */}
+      <motion.div 
+        className="grid md:grid-cols-2 gap-4 w-full max-w-4xl mx-auto"
+        variants={fadeInUp}
+      >
+        {/* Models */}
+        <div className="p-4 bg-black/40 rounded-xl border border-white/5">
+          <h4 className="text-white font-bold mb-3 flex items-center gap-2">
+            <CarIcon className="text-cyan-400" size={16} />
+            Сегментация по моделям
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {data.models.map((model, i) => (
+              <motion.span 
+                key={i}
+                className="px-3 py-1.5 bg-white/5 rounded-lg text-white text-xs font-medium border border-white/5 hover:border-cyan-400 hover:text-cyan-400 transition-colors cursor-default"
+                whileHover={{ scale: 1.05 }}
+              >
+                {model}
+              </motion.span>
+            ))}
+          </div>
+        </div>
+
+        {/* Tech Stack */}
+        <div className="p-4 bg-black/40 rounded-xl border border-white/5">
+          <h4 className="text-white font-bold mb-3 flex items-center gap-2">
+            <Cpu className="text-cyan-400" size={16} />
+            Технологический стек
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {data.techStack.map((tech, i) => (
+              <motion.span 
+                key={i}
+                className="px-3 py-1.5 bg-cyan-400/10 rounded-lg text-cyan-400 text-xs font-medium border border-cyan-400/20 cursor-default"
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+              >
+                {tech}
+              </motion.span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// Helper Icon for Cars
+const CarIcon = ({ size, className }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+    <circle cx="7" cy="17" r="2" />
+    <path d="M9 17h6" />
+    <circle cx="17" cy="17" r="2" />
+  </svg>
+);
+
+// --- CASE SLIDE COMPONENT ---
+
+const CaseSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center py-8"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      {/* Header */}
+      <motion.div 
+        className="mb-6 border-b border-white/10 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-3"
+        variants={slideInLeft}
+      >
+        <div>
+          <motion.div 
+            className="flex items-center gap-2 text-cyan-400 mb-1"
+            variants={fadeIn}
+          >
+            <MapPin size={14} />
+            <span className="uppercase tracking-widest text-xs font-bold">{data.region}</span>
+          </motion.div>
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold text-white"
+            variants={fadeInUp}
+          >
+            {data.client}
+          </motion.h2>
+        </div>
+        <motion.div 
+          className="text-right hidden md:block"
+          variants={slideInRight}
+        >
+          <motion.div 
+            className="text-gray-400 text-xs flex items-center justify-end gap-1"
+            whileHover={{ color: '#00f0ff' }}
+          >
+            <Clock size={12} />
+            Период работы
+          </motion.div>
+          <motion.div 
+            className="text-white font-mono text-base"
+            whileHover={{ scale: 1.05 }}
+          >
+            {data.period}
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* Main Grid */}
+      <motion.div 
+        className="grid lg:grid-cols-2 gap-6 mb-6"
+        variants={staggerContainer}
+      >
+        {/* Left: Problem & Goal */}
+        <motion.div className="space-y-6" variants={staggerContainer}>
+          <motion.div 
+            className="bg-neutral-900/50 p-4 rounded-xl border border-white/5 hover:border-cyan-400/30 transition-colors"
+            variants={scaleIn}
+            whileHover={{ scale: 1.02 }}
+          >
+            <motion.h3 
+              className="text-cyan-400 font-bold mb-3 flex items-center gap-2"
+              whileHover={{ x: 5 }}
+            >
+              <Target size={16} /> Цель
+            </motion.h3>
+            <motion.p 
+              className="text-gray-300 text-sm"
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              {data.goal}
+            </motion.p>
+          </motion.div>
+          
+          <motion.div variants={fadeInUp}>
+            <motion.h3 
+              className="text-white font-bold mb-3 flex items-center gap-2"
+              variants={fadeIn}
+            >
+              <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span> До начала работы
+            </motion.h3>
+            <motion.ul className="space-y-1.5" variants={staggerContainer}>
+              {data.before.map((item, i) => (
+                <motion.li 
+                  key={i} 
+                  className="text-gray-400 text-sm flex items-start gap-1.5"
+                  variants={fadeInUp}
+                  whileHover={{ x: 5, color: '#ef4444' }}
+                >
+                  <span className="text-red-500/50">•</span> {item}
+                </motion.li>
+              ))}
+            </motion.ul>
+          </motion.div>
+        </motion.div>
+
+        {/* Right: Solution */}
+        <motion.div 
+          className="bg-neutral-900 p-4 rounded-xl border border-cyan-400/20 relative overflow-hidden group"
+          variants={scaleIn}
+          whileHover={{ borderColor: '#00f0ff' }}
+        >
+          <motion.div 
+            className="absolute top-0 right-0 w-24 h-24 bg-cyan-400/10 blur-3xl rounded-full"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          <motion.h3 
+            className="text-white font-bold mb-3 flex items-center gap-2 relative z-10"
+            whileHover={{ x: 5 }}
+          >
+            <Zap size={16} className="text-cyan-400" /> Что сделали
+          </motion.h3>
+          <motion.ul className="space-y-2 relative z-10" variants={staggerContainer}>
+            {data.actions.map((item, i) => (
+              <motion.li 
+                key={i} 
+                className="text-gray-300 text-sm flex items-start gap-2 group/item cursor-pointer"
+                variants={fadeInUp}
+                whileHover={{ x: 5 }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.3, rotate: 15 }}
+                >
+                  <CheckCircle size={14} className="text-cyan-400 shrink-0 mt-0.5" />
+                </motion.div>
+                <span className="group-hover/item:text-cyan-400 transition-colors">{item}</span>
+              </motion.li>
+            ))}
+          </motion.ul>
+        </motion.div>
+      </motion.div>
+
+      {/* Footer: Results */}
+      <motion.div 
+        className="grid md:grid-cols-3 gap-4 mt-auto"
+        variants={staggerContainer}
+      >
+        {data.results.map((res, i) => (
+          <motion.div 
+            key={i} 
+            className="bg-gradient-to-br from-neutral-900 to-black p-4 rounded-xl border border-white/10 text-center hover:border-cyan-400/50 transition-all duration-300 group cursor-pointer"
+            variants={scaleIn}
+            whileHover={{ y: -8, scale: 1.05 }}
+          >
+            <motion.div 
+              className="flex justify-center mb-2"
+              whileHover={{ scale: 1.2, rotate: 360 }}
+              transition={{ duration: 0.6 }}
+            >
+              <res.icon size={24} style={{ color: res.color }} />
+            </motion.div>
+            <motion.div 
+              className="text-gray-400 text-xs mb-1"
+              whileHover={{ color: '#00f0ff' }}
+            >
+              {res.label}
+            </motion.div>
+            <motion.div 
+              className="text-3xl font-black text-white mb-0.5 group-hover:text-cyan-400 transition-colors"
+              whileHover={{ scale: 1.1 }}
+            >
+              {res.value}
+            </motion.div>
+            <motion.div 
+              className="text-cyan-400/60 text-xs font-mono"
+              whileHover={{ opacity: 1 }}
+            >
+              {res.sub}
+            </motion.div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Testimonial */}
+      {data.testimonial && (
+        <motion.div 
+          className="mt-6 p-4 bg-cyan-400/10 rounded-xl border border-cyan-400/20 text-center"
+          variants={fadeInUp}
+          whileHover={{ scale: 1.02, backgroundColor: 'rgba(34, 211, 238, 0.15)' }}
+        >
+          <motion.p 
+            className="text-cyan-400 italic text-sm"
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            {data.testimonial}
+          </motion.p>
+        </motion.div>
+      )}
+    </motion.div>
+  </SlideWrapper>
+);
+
+const AnalyticsSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 flex items-center h-full"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <div className="grid md:grid-cols-2 gap-12 items-center w-full">
+        <motion.div 
+          className="order-2 md:order-1 relative"
+          variants={slideInLeft}
+        >
+          <motion.div 
+            className="aspect-square bg-gradient-to-br from-cyan-900/20 to-black rounded-full absolute inset-0 blur-3xl"
+            animate={{ scale: [1, 1.1, 1], rotate: [0, 180, 0] }}
+            transition={{ duration: 10, repeat: Infinity }}
+          />
+          <motion.div 
+            className="relative z-10 grid grid-cols-2 gap-3"
+            variants={staggerContainer}
+          >
+            {data.metrics && data.metrics.map((metric, i) => (
+              <motion.div 
+                key={i}
+                className="p-4 bg-neutral-900 rounded-xl border border-white/10 text-center group cursor-pointer"
+                variants={scaleIn}
+                whileHover={{ y: -3, borderColor: '#00f0ff' }}
+              >
+                <motion.div 
+                  className="text-2xl font-bold text-cyan-400 mb-1 group-hover:scale-110 transition-transform"
+                  whileHover={{ scale: 1.1 }}
+                >
+                  {metric.value}
+                </motion.div>
+                <span className="text-xs text-gray-400">{metric.label}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+        <motion.div 
+          className="order-1 md:order-2"
+          variants={slideInRight}
+        >
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold text-white mb-6"
+            variants={fadeInUp}
+          >
+            {data.title}
+          </motion.h2>
+          <motion.ul className="space-y-4" variants={staggerContainer}>
+            {data.points.map((point, i) => (
+              <motion.li 
+                key={i} 
+                className="flex items-center gap-3 text-lg text-gray-300 group cursor-pointer"
+                variants={fadeInUp}
+                whileHover={{ x: 10 }}
+              >
+                <motion.div 
+                  className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center text-cyan-400 font-bold group-hover:bg-cyan-400 group-hover:text-black transition-colors"
+                  whileHover={{ scale: 1.2, rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {i + 1}
+                </motion.div>
+                <span className="group-hover:text-cyan-400 transition-colors">{point}</span>
+              </motion.li>
+            ))}
+          </motion.ul>
+        </motion.div>
+      </div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- STEPS SLIDE ---
+
+const StepsSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <motion.h2 
+        className="text-4xl md:text-6xl font-bold text-white mb-12 text-center"
+        variants={fadeInUp}
+      >
+        {data.title}
+      </motion.h2>
+      <motion.div 
+        className="grid md:grid-cols-3 gap-6 relative"
+        variants={staggerContainer}
+      >
+        {/* Connector Line */}
+        <motion.div 
+          className="hidden md:block absolute top-10 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-30"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        />
+        
+        {data.steps.map((step, i) => (
+          <motion.div 
+            key={i} 
+            className="relative z-10 flex flex-col items-center text-center group cursor-pointer"
+            variants={scaleIn}
+            whileHover={{ scale: 1.05 }}
+          >
+            <motion.div 
+              className="w-20 h-20 bg-neutral-900 rounded-full border-2 border-cyan-400 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(34,211,238,0.2)] group-hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-shadow"
+              whileHover={{ scale: 1.1, rotate: 360 }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.span 
+                className="text-2xl font-black text-white"
+                whileHover={{ scale: 1.2 }}
+              >
+                {step.num}
+              </motion.span>
+            </motion.div>
+            <motion.div 
+              className="w-10 h-10 bg-cyan-400/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-cyan-400/30 transition-colors"
+              whileHover={{ scale: 1.1, rotate: 15 }}
+            >
+              <step.icon className="text-cyan-400" size={20} />
+            </motion.div>
+            <motion.h3 
+              className="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors"
+              whileHover={{ scale: 1.05 }}
+            >
+              {step.title}
+            </motion.h3>
+            <motion.p 
+              className="text-gray-400 text-sm max-w-xs group-hover:text-white transition-colors"
+              whileHover={{ opacity: 1 }}
+            >
+              {step.desc}
+            </motion.p>
+          </motion.div>
+        ))}
+      </motion.div>
+      <motion.div 
+        className="mt-12 text-center"
+        variants={fadeInUp}
+      >
+        <motion.p 
+          className="text-cyan-400 font-medium tracking-widest uppercase inline-block px-4 py-2 bg-cyan-400/10 rounded-lg"
+          whileHover={{ scale: 1.05 }}
+        >
+          {data.footer}
+        </motion.p>
+      </motion.div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- CONTACT SLIDE ---
+
+const ContactSlide = ({ data, isActive }) => (
+  <SlideWrapper className="bg-transparent" isActive={isActive}>
+    <motion.div 
+      className="container mx-auto px-6 h-full flex flex-col justify-center items-center text-center"
+      initial="hidden"
+      animate={isActive ? "visible" : "hidden"}
+      variants={staggerContainer}
+    >
+      <motion.h2 
+        className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tighter"
+        variants={fadeInUp}
+      >
+        {data.title}
+      </motion.h2>
+      <motion.p 
+        className="text-lg md:text-xl text-gray-400 mb-12"
+        variants={fadeInUp}
+      >
+        {data.subtitle}
+      </motion.p>
+      
+      {/* Contact Info Cards */}
+      <motion.div 
+        className="grid md:grid-cols-3 gap-6 mb-12 w-full max-w-4xl"
+        variants={staggerContainer}
+      >
+        {/* Phone */}
+        <motion.a 
+          href={`tel:${data.phone}`}
+          className="flex flex-col items-center gap-4 p-8 bg-black/50 rounded-2xl border border-white/10 hover:border-cyan-400/50 transition-all group cursor-pointer"
+          variants={scaleIn}
+          whileHover={{ y: -8, scale: 1.05 }}
+        >
+          <motion.div 
+            className="w-16 h-16 bg-cyan-400/20 rounded-full flex items-center justify-center group-hover:bg-cyan-400/30 transition-colors"
+            whileHover={{ scale: 1.1, rotate: 360 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Phone className="text-cyan-400" size={32} />
+          </motion.div>
+          <div>
+            <div className="text-gray-400 text-sm mb-1">Телефон</div>
+            <div className="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors">{data.phone}</div>
+          </div>
+        </motion.a>
+
+        {/* Email */}
+        <motion.a 
+          href={`mailto:${data.email}`}
+          className="flex flex-col items-center gap-4 p-8 bg-black/50 rounded-2xl border border-white/10 hover:border-cyan-400/50 transition-all group cursor-pointer"
+          variants={scaleIn}
+          whileHover={{ y: -8, scale: 1.05 }}
+        >
+          <motion.div 
+            className="w-16 h-16 bg-cyan-400/20 rounded-full flex items-center justify-center group-hover:bg-cyan-400/30 transition-colors"
+            whileHover={{ scale: 1.1, rotate: 360 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Send className="text-cyan-400" size={32} />
+          </motion.div>
+          <div>
+            <div className="text-gray-400 text-sm mb-1">Email</div>
+            <div className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">{data.email}</div>
+          </div>
+        </motion.a>
+
+        {/* Website */}
+        <motion.a 
+          href={`https://${data.site}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center gap-4 p-8 bg-black/50 rounded-2xl border border-white/10 hover:border-cyan-400/50 transition-all group cursor-pointer"
+          variants={scaleIn}
+          whileHover={{ y: -8, scale: 1.05 }}
+        >
+          <motion.div 
+            className="w-16 h-16 bg-cyan-400/20 rounded-full flex items-center justify-center group-hover:bg-cyan-400/30 transition-colors"
+            whileHover={{ scale: 1.1, rotate: 360 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Globe className="text-cyan-400" size={32} />
+          </motion.div>
+          <div>
+            <div className="text-gray-400 text-sm mb-1">Сайт</div>
+            <div className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">{data.site}</div>
+          </div>
+        </motion.a>
+      </motion.div>
+
+      {/* Additional Info */}
+      <motion.div 
+        className="mt-8 text-center"
+        variants={fadeIn}
+      >
+        <motion.p 
+          className="text-gray-500 text-sm"
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          Работаем по всей России • Ответим в течение 15 минут
+        </motion.p>
+      </motion.div>
+    </motion.div>
+  </SlideWrapper>
+);
+
+// --- Main App Component ---
+
+export default function App() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ container: containerRef });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const scrollTop = containerRef.current.scrollTop;
+      const height = window.innerHeight;
+      const index = Math.round(scrollTop / height);
+      if (index !== currentSlide && index >= 0 && index < SLIDES_DATA.length) {
+        setCurrentSlide(index);
+      }
+    }
+  };
+
+  const scrollToSlide = (index) => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: index * window.innerHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleNext = () => {
+    if (currentSlide < SLIDES_DATA.length - 1) scrollToSlide(currentSlide + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentSlide > 0) scrollToSlide(currentSlide - 1);
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') handleNext();
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') handlePrev();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentSlide]);
+
+  const renderSlide = (slideData, index) => {
+    const isActive = index === currentSlide;
+    
+    switch(slideData.type) {
+      case 'cover': return <CoverSlide key={index} data={slideData} isActive={isActive} />;
+      case 'specialization': return <SpecializationSlide key={index} data={slideData} isActive={isActive} />;
+      case 'market-reality': return <MarketRealitySlide key={index} data={slideData} isActive={isActive} />;
+      case 'client-pains': return <ClientPainsSlide key={index} data={slideData} isActive={isActive} />;
+      case 'approach': return <ApproachSlide key={index} data={slideData} isActive={isActive} />;
+      case 'outsourcing': return <OutsourcingSlide key={index} data={slideData} isActive={isActive} />;
+      case 'landing': return <LandingSlide key={index} data={slideData} isActive={isActive} />;
+      case 'feature': return <FeatureSlide key={index} data={slideData} isActive={isActive} />;
+      case 'channels': return <ChannelsSlide key={index} data={slideData} isActive={isActive} />;
+      case 'logic': return <LogicSlide key={index} data={slideData} isActive={isActive} />;
+      case 'case': return <CaseSlide key={index} data={slideData} isActive={isActive} />;
+      case 'analytics': return <AnalyticsSlide key={index} data={slideData} isActive={isActive} />;
+      case 'steps': return <StepsSlide key={index} data={slideData} isActive={isActive} />;
+      case 'contact': return <ContactSlide key={index} data={slideData} isActive={isActive} />;
+      default: return null;
+    }
+  };
+
+  return (
+    <div className="bg-black text-white font-sans antialiased selection:bg-cyan-400 selection:text-black overflow-hidden">
+      <AnimatedBackground currentSlide={currentSlide} />
+      <ProgressBar current={currentSlide} total={SLIDES_DATA.length} />
+      
+      <div 
+        ref={containerRef}
+        onScroll={handleScroll}
+        className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {SLIDES_DATA.map((slide, index) => renderSlide(slide, index))}
+      </div>
+
+      {/* Navigation Removed as requested */}
+      
+      {/* Mobile Hint */}
+      <motion.div 
+        className="fixed bottom-24 left-1/2 -translate-x-1/2 text-white/20 text-xs md:hidden pointer-events-none"
+        animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+      >
+        <span className="flex items-center gap-2">
+          Листайте <ChevronDown size={14} />
+        </span>
+      </motion.div>
+
+      {/* Slide Counter */}
+      <motion.div 
+        className="fixed top-4 right-4 z-50 text-white/30 text-sm font-mono"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+      >
+        {String(currentSlide + 1).padStart(2, '0')} / {String(SLIDES_DATA.length).padStart(2, '0')}
+      </motion.div>
+    </div>
+  );
+}
+```
